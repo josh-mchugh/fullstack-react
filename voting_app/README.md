@@ -1,4 +1,15 @@
-# Voting App
+# Voting
+This applicaiton is a voting appplication which works similar to ProductHunt. It's a small ReactJS application which demonstrates:
+- ReactJS Components
+- Rendering JSX
+- Oneway data flow
+- Immutability and State
+- ReactJS lifecycles
+
+## Demonstration GIF
+![Demonstration of ReactJS application](./images/demostration.gif)
+
+## Setup and Execution
 
 1. Run `npm install` to install dependencies.
 
