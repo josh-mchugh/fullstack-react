@@ -7,7 +7,7 @@ This applicaiton is a voting appplication which works similar to ProductHunt. It
 - ReactJS lifecycles
 
 ## Demonstration GIF
-![Demonstration of ReactJS application](./images/demostration.gif)
+![Demonstration of ReactJS application](./images/demonstration.gif)
 
 ## Setup and Execution
 
