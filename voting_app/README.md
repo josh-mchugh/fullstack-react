@@ -1,4 +1,4 @@
-# Voting
+# Voting App
 This applicaiton is a voting appplication which works similar to ProductHunt. It's a small ReactJS application which demonstrates:
 - ReactJS Components
 - Rendering JSX
