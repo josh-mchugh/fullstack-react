@@ -14,8 +14,17 @@ class EditableTimerList extends React.Component {
     render() {
         return (
             <div id="timers">
-                Hello World!
+                <EditableTimer />
+                <EditableTimer />
             </div>
+        );
+    }
+}
+
+class EditableTimer extends React.Component {
+    render() {
+        return (
+            <div>Hello World!</div>
         );
     }
 }
