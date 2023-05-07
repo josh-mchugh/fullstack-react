@@ -3,8 +3,18 @@ class TimerDashboard extends React.Component {
         return (
             <div className="ui three column centered grid">
                 <div className="column">
-                    Hello World!
+                    <EditableTimerList />
                 </div>
+            </div>
+        );
+    }
+}
+
+class EditableTimerList extends React.Component {
+    render() {
+        return (
+            <div id="timers">
+                Hello World!
             </div>
         );
     }
