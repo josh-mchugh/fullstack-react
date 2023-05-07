@@ -4,6 +4,9 @@ class TimerDashboard extends React.Component {
             <div className="ui three column centered grid">
               <div className="column">
                 <EditableTimerList />
+                <ToggleableTimerForm
+                  isOpen={true}
+                />
               </div>
             </div>
         );
@@ -35,18 +38,18 @@ class EditableTimerList extends React.Component {
 
 class EditableTimer extends React.Component {
     render() {
-            if (this.props.editFormOpen) {
-                return (
-                    <TimerForm
-                      title={this.props.title}
-                      project={this.props.project}
-                    />
-                );
-            } else {
-                return (
-                    <div>Hello World!</div>
-                );
-            }
+        if (this.props.editFormOpen) {
+          return (
+            <TimerForm
+              title={this.props.title}
+              project={this.props.project}
+            />
+          );
+        } else {
+          return (
+            <div>Hello World!</div>
+          );
+        }
     }
 }
 
@@ -77,6 +80,24 @@ class TimerForm extends React.Component {
               </div>
             </div>
         );
+    }
+}
+
+class ToggleableTimerForm extends React.Component {
+    render() {
+        if (this.props.isOpen) {
+            return (
+                <TimerForm />
+            );
+        } else {
+            return (
+                <div className="ui basic content center aligned segment">
+                  <button className="ui basic button icon">
+                    <i class="plus icon" />
+                  </button>
+                </div>
+            );
+        }
     }
 }
 
