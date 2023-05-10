@@ -27,8 +27,19 @@ window.helpers = (function () {
         return padded;
     }
 
+    function newTimer(attrs = {}) {
+        const timer = {
+            title: attrs.title || 'Timer',
+            project: attrs.project || 'Project',
+            id: uuid.v4(),
+            elapsed: 0
+        };
+        return timer;
+    }
+
     return {
         millisecondsToHuman,
+        newTimer,
         renderElapsedString
     };
 })();
