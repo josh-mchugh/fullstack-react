@@ -23,7 +23,7 @@ window.helpers = (function () {
 
     function pad(numberString, size) {
         let padded = numberString;
-        while(padded.legth < size) padded = `0${padded}`;
+        while(padded.length < size) padded = `0${padded}`;
         return padded;
     }
 
