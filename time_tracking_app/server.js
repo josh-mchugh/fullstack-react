@@ -28,6 +28,36 @@ app.get('/api/timers', (req, res) => {
     });
 });
 
+app.post('/api/timers/start', (req, res) => {
+    fs.readFile(DATA_FILE, (err, data) => {
+        const timers = JSON.parse(data);
+        timers.forEach(timer => {
+            if(timer.id === req.body.id) {
+                timer.runningSince = req.body.start;
+            }
+        });
+        fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
+            res.json({});
+        });
+    });
+});
+
+app.post('/api/timers/stop', (req, res) => {
+    fs.readFile(DATA_FILE, (err, data) => {
+        const timers = JSON.parse(data);
+        timers.forEach(timer => {
+            if(timer.id === req.body.id) {
+                const delta = req.body.stop - timer.runningSince;
+                timer.elapsed += delta;
+                timer.runningSince = null;
+            }
+        });
+        fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
+            res.json({});
+        });
+    });
+})
+
 app.listen(app.get('port'), () => {
     console.log(`Find the server at: http://localhost:${app.get('port')}`);
 });

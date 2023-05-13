@@ -1,4 +1,5 @@
 window.client = (function() {
+
     function getTimers(success) {
         return fetch('/api/timers', {
             headers: {
@@ -7,6 +8,28 @@ window.client = (function() {
         }).then(checkStatus)
             .then(parseJSON)
             .then(success);
+    }
+
+    function startTimer(data) {
+        return fetch('/api/timers/start', {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(checkStatus);
+    }
+
+    function stopTimer(data) {
+        return fetch('/api/timers/stop', {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(checkStatus);
     }
 
     function checkStatus(response) {
@@ -24,6 +47,8 @@ window.client = (function() {
     }
 
     return {
-      getTimers
+        getTimers,
+        startTimer,
+        stopTimer
     };
 })();
