@@ -21,6 +21,17 @@ window.client = (function() {
         }).then(checkStatus);
     }
 
+    function updateTimer(data) {
+        return fetch('/api/timers', {
+            method: 'put',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(checkStatus);
+    }
+
     function startTimer(data) {
         return fetch('/api/timers/start', {
             method: 'post',
@@ -60,6 +71,7 @@ window.client = (function() {
     return {
         getTimers,
         createTimer,
+        updateTimer,
         startTimer,
         stopTimer
     };
