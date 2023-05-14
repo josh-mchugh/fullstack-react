@@ -91,6 +91,21 @@ app.put('/api/timers', (req, res) => {
     });
 });
 
+app.delete('/api/timers', (req, res) => {
+    fs.readFile(DATA_FILE, (err, data) => {
+        let timers = JSON.parse(data);
+        timers = timers.reduce((memo, timer) => {
+            if(timer.id === req.body.id) {
+                return memo;
+            }
+            return memo.concat(timer);
+        }, []);
+        fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
+            res.json({});
+        });
+    });
+});
+
 app.listen(app.get('port'), () => {
     console.log(`Find the server at: http://localhost:${app.get('port')}`);
 });

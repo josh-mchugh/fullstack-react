@@ -32,6 +32,17 @@ window.client = (function() {
         }).then(checkStatus);
     }
 
+    function deleteTimer(data) {
+        return fetch('/api/timers', {
+            method: 'delete',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(checkStatus);
+    }
+
     function startTimer(data) {
         return fetch('/api/timers/start', {
             method: 'post',
@@ -72,6 +83,7 @@ window.client = (function() {
         getTimers,
         createTimer,
         updateTimer,
+        deleteTimer,
         startTimer,
         stopTimer
     };
