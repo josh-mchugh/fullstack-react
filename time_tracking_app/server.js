@@ -28,6 +28,24 @@ app.get('/api/timers', (req, res) => {
     });
 });
 
+app.post('/api/timers', (req, res) => {
+    fs.readFile(DATA_FILE, (err, data) => {
+        const timers = JSON.parse(data);
+        const newTimer = {
+            title: req.body.title,
+            project: req.body.project,
+            id: req.body.id,
+            elapsed: 0,
+            runningSince: null
+        };
+        timers.push(newTimer);
+        fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
+            res.setHeader('Cache-Control', 'no-cache');
+            res.json(timers);
+        });
+    });
+});
+
 app.post('/api/timers/start', (req, res) => {
     fs.readFile(DATA_FILE, (err, data) => {
         const timers = JSON.parse(data);

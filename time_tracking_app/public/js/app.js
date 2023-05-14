@@ -29,6 +29,7 @@ class TimerDashboard extends React.Component {
     createTimer = (timer) => {
         const t = helpers.newTimer(timer);
         this.setState({ timers: this.state.timers.concat(t) });
+        client.createTimer(t);
     };
     updateTimer = (attrs) => {
         const timers = this.state.timers.map(timer => {
@@ -40,7 +41,7 @@ class TimerDashboard extends React.Component {
             }
             return timer;
         });
-        this.setState({ timers: timers});
+        this.setState({ timers: timers });
     };
     deleteTimer = (timerId) => {
         const timers = this.state.timers.filter(timer => timer.id !== timerId);

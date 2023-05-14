@@ -10,6 +10,17 @@ window.client = (function() {
             .then(success);
     }
 
+    function createTimer(data) {
+        return fetch('/api/timers', {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(checkStatus);
+    }
+
     function startTimer(data) {
         return fetch('/api/timers/start', {
             method: 'post',
@@ -48,6 +59,7 @@ window.client = (function() {
 
     return {
         getTimers,
+        createTimer,
         startTimer,
         stopTimer
     };
