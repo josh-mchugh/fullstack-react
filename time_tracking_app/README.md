@@ -7,5 +7,22 @@ This is a small ReactJS application which demonstrates the following:
 - User Input
 - Server Communication
 
+## Demonsraton GIF
 ![Demonstration GIF of Time Tracking App](./images/demonstration.gif)
+
+## Setup and Execution
+
+1. Run `npm install` to install dependencies.
+
+```shell
+npm install
+```
+
+2. Start `live-server` to run the application.
+
+```shell
+npm run start
+```
+
+3. View application in browser at `localhost:3000`.
 
