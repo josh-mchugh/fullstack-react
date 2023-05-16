@@ -5,6 +5,7 @@ This is a small ReactJS application which demonstrates the following:
 - Components
 - State & Props
 - User Input
+- Event Propagation
 - Server Communication
 
 ## Demonsraton GIF
