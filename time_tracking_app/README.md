@@ -7,5 +7,5 @@ This is a small ReactJS application which demonstrates the following:
 - User Input
 - Server Communication
 
-![Demonstration GIF of Time Tracking App](./time_tracking_app/images/demonstration.gif)
+![Demonstration GIF of Time Tracking App](./images/demonstration.gif)
 
