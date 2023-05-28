@@ -1,12 +1,14 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 
-import One from './01-basic-button.js';
+import Button from './basic-button.js';
+import Input from './basic-input';
 
 const routes = [
-  One
-]
+    Button,
+    Input
+];
 
 const location = window.location;
 window.addEventListener('hashchange', location.reload.bind(location));
@@ -16,7 +18,8 @@ const element = loc ? createRoute(loc) : createTOC();
 const container = document.createElement('div');
 document.body.appendChild(container);
 
-render(element, container);
+const root = createRoot(container);
+root.render(element);
 
 function createTOC() {
     return (
