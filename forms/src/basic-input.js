@@ -6,9 +6,16 @@ document.body.appendChild(content);
 class Input extends React.Component {
     static displayName = 'basic-input';
 
+    state = {
+        names: []
+    };
+
     onFormSubmit = (evt) => {
         evt.preventDefault();
-        console.log(this.refs.name.value);
+        const name = this.refs.name.value;
+        const names = [...this.state.names, name];
+        this.setState((prevState, props) => ({ names: names }) ) ;
+        this.refs.name.value = '';
     }
 
     render() {
@@ -22,6 +29,12 @@ class Input extends React.Component {
                 />
                 <input type="submit"/>
               </form>
+              <div>
+                <h3>Names</h3>
+                <ul>
+                  { this.state.names.map((name, i) => <li key={i}>{name}</li>)}
+                </ul>
+              </div>
             </div>
         );
     }
