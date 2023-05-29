@@ -7,23 +7,29 @@ class Input extends React.Component {
     static displayName = 'basic-input';
 
     state = {
-        name: '',
-        names: []
+        fields: {
+          name: '',
+          email: '',
+        },
+        people: []
     };
 
     onFormSubmit = (evt) => {
         evt.preventDefault();
-        const names = [...this.state.names, this.state.name];
+        const people = [...this.state.people, this.state.fields];
         this.setState((prevState, props) => ({
-                name: '',
-                names: names
+            people,
+            fields: {
+              name: '',
+              email: ''
+            }
         }));
     }
 
-    onNameChange = (evt) => {
-        this.setState((prevState, props) => ({
-            name: evt.target.value
-        }));
+    onInputChange = (evt) => {
+        const fields = Object.assign({}, this.state.fields);
+        fields[evt.target.name] = evt.target.value;
+        this.setState((prevState, props) => ({ fields }));
     }
 
     render() {
@@ -33,15 +39,26 @@ class Input extends React.Component {
               <form onSubmit={this.onFormSubmit}>
                 <input
                   placeholder='Name'
-                  value={this.state.name}
-                  onChange={this.onNameChange}
+                  name='name'
+                  value={this.state.fields.name}
+                  onChange={this.onInputChange}
+                />
+                <input
+                  placeholder='Email'
+                  name='email'
+                  value={this.state.fields.email}
+                  onChange={this.onInputChange}
                 />
                 <input type="submit"/>
               </form>
               <div>
                 <h3>Names</h3>
                 <ul>
-                  { this.state.names.map((name, i) => <li key={i}>{name}</li>) }
+                  { this.state.people.map(({name, email}, i) => (
+                      <li key={i}>
+                          {name} ({email})
+                      </li>
+                  ))}
                 </ul>
               </div>
             </div>
