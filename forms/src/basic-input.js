@@ -7,15 +7,23 @@ class Input extends React.Component {
     static displayName = 'basic-input';
 
     state = {
+        name: '',
         names: []
     };
 
     onFormSubmit = (evt) => {
         evt.preventDefault();
-        const name = this.refs.name.value;
-        const names = [...this.state.names, name];
-        this.setState((prevState, props) => ({ names: names }) ) ;
-        this.refs.name.value = '';
+        const names = [...this.state.names, this.state.name];
+        this.setState((prevState, props) => ({
+                name: '',
+                names: names
+        }));
+    }
+
+    onNameChange = (evt) => {
+        this.setState((prevState, props) => ({
+            name: evt.target.value
+        }));
     }
 
     render() {
@@ -25,14 +33,15 @@ class Input extends React.Component {
               <form onSubmit={this.onFormSubmit}>
                 <input
                   placeholder='Name'
-                  ref='name'
+                  value={this.state.name}
+                  onChange={this.onNameChange}
                 />
                 <input type="submit"/>
               </form>
               <div>
                 <h3>Names</h3>
                 <ul>
-                  { this.state.names.map((name, i) => <li key={i}>{name}</li>)}
+                  { this.state.names.map((name, i) => <li key={i}>{name}</li>) }
                 </ul>
               </div>
             </div>
