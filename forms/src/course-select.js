@@ -28,6 +28,98 @@ class CourseSelect extends React.Component {
             course: update.course
         };
     };
+
+    onSelectDepartment = (evt) => {
+        const department = evt.target.value;
+        const course = null;
+        this.setState((prevState, props) => ({ department, course }));
+        this.props.onChange({
+            name: 'department',
+            value: department
+        });
+        this.props.onChange({
+            name: 'course',
+            value: course
+        });
+    };
+
+    onSelectCourse = (evt) => {
+        const course = evt.target.value;
+        this.setState((prevState, props) => ({ course }));
+        this.props.onChange({
+            name: 'course',
+            value: course
+        });
+    };
+
+    fetch = department => {
+        this.setState((prevState, props) => ({
+            _loading: true,
+            courses: []
+        }));
+        apiClient(department).then(courses => {
+            this.setState((prevState, props) => ({
+                _loading: false,
+                courses: courses
+            }));
+        });
+    };
+
+    renderDepartmentSelect = () => {
+        return (
+            <select
+              onChange={this.onSelectDepartment}
+              value={this.state.department || ''}
+            >
+              <option value="">Which Department?</option>
+              <option value="core">NodeSchool: Core</option>
+              <option value="electives">NodeSchool: Electives</option>
+            </select>
+        );
+    };
+
+    renderCourseSelect = () => {
+        if(this.state._loading) {
+            return <div>Loading...</div>
+        }
+
+        if(!this.state.department || !this.state.coures.length) {
+            return <span />
+        }
+
+        return (
+            <select>
+              {[
+                <option value="" key="course-none">Which course?</option>,
+                ...this.state.courses.map((course, i) => (
+                  <option value={course} key={i}>
+                    {course}
+                  </option>
+                ))
+              ]}
+            </select>
+        );
+    };
+
+    render() {
+        return (
+            <div>
+              {this.renderDepartmentSelect()}
+              <br/>
+              {this.renderCourseSelect()}
+            </div>
+        );
+    }
+};
+
+function apiClient(department) {
+    return {
+        then: function(cb) {
+            setTimeout(() => {
+                cb(Courses[department]);
+            }, 1000);
+        }
+    };
 }
 
 export default CourseSelect;
