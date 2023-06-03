@@ -12,7 +12,7 @@ class CourseSelect extends React.Component {
     static propTypes = {
         department: PropTypes.string,
         course: PropTypes.string,
-        onChange: PropTypes.func.isRequired
+        onChanges: PropTypes.func.isRequired
     };
 
     state = {
@@ -22,7 +22,7 @@ class CourseSelect extends React.Component {
         _loading: false
     };
 
-    static getDerivedStateFromProps = (update) => {
+    static getDerivedStateFromProps = function(update) {
         return {
             department: update.department,
             course: update.course
@@ -33,23 +33,29 @@ class CourseSelect extends React.Component {
         const department = evt.target.value;
         const course = null;
         this.setState((prevState, props) => ({ department, course }));
-        this.props.onChange({
-            name: 'department',
-            value: department
-        });
-        this.props.onChange({
-            name: 'course',
-            value: course
-        });
+        this.props.onChanges([
+            {
+                name: 'department',
+                value: department
+            },
+            {
+                name: 'course',
+                value: course
+            }
+        ]);
+
+        if(department) {
+            this.fetch(department);
+        }
     };
 
     onSelectCourse = (evt) => {
         const course = evt.target.value;
         this.setState((prevState, props) => ({ course }));
-        this.props.onChange({
+        this.props.onChanges([{
             name: 'course',
             value: course
-        });
+        }]);
     };
 
     fetch = department => {
@@ -83,12 +89,12 @@ class CourseSelect extends React.Component {
             return <div>Loading...</div>
         }
 
-        if(!this.state.department || !this.state.coures.length) {
+        if(!this.state.department || !this.state.courses.length) {
             return <span />
         }
 
         return (
-            <select>
+            <select onChange={this.onSelectCourse} value={this.state.course || ''}>
               {[
                 <option value="" key="course-none">Which course?</option>,
                 ...this.state.courses.map((course, i) => (

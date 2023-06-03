@@ -1,6 +1,7 @@
 import React from 'react';
 import isEmail from 'validator/lib/isEmail';
-import Field from "./field.js";
+import Field from "./field";
+import CourseSelect from './course-select';
 
 const content = document.createElement('div');
 document.body.appendChild(content);
@@ -12,6 +13,8 @@ class Input extends React.Component {
         fields: {
           name: '',
           email: '',
+          course: '',
+          department: ''
         },
         fieldErrors: {},
         people: []
@@ -27,30 +30,41 @@ class Input extends React.Component {
                 people,
                 fields: {
                     name: '',
-                    email: ''
+                    email: '',
+                    department: '',
+                    course: ''
                 }
             }));
         }
-    }
+    };
 
-    onInputChange = ({ name, value, error }) => {
+    onInputChange = (change) => {
+        this.onInputChanges([change]);
+    };
+
+    onInputChanges = (changes) => {
         const fields = Object.assign({}, this.state.fields);
         const fieldErrors = Object.assign({}, this.state.fieldErrors);
 
-        fields[name] = value;
-        fieldErrors[name] = error;
+        changes.forEach(({name, value, error}) => {
+            fields[name] = value;
+            fieldErrors[name] = error;  
+        });
 
         this.setState((prevState, props) => ({ fields, fieldErrors }));
-    }
+    };
 
     validate = () => {
         const person = this.state.fields;
         const fieldErrors = this.state.fieldErrors;
         const errMessages = Object.keys(fieldErrors).filter((name) => fieldErrors[name]);
 
-        return !person.name || !person.email || errMessages.length;
-    }
-
+        return !person.name
+            || !person.email
+            || !person.course
+            || !person.department
+            || errMessages.length;
+    };
 
     render() {
         return (
@@ -73,14 +87,20 @@ class Input extends React.Component {
                   validate={val => (isEmail(val) ? false : 'Invalid Email')}
                 />
                 <br/>
+                <CourseSelect
+                  department={this.state.fields.department}
+                  course={this.state.fields.course}
+                  onChanges={this.onInputChanges}
+                />
+                <br/>
                 <input type="submit" disabled={this.validate()}/>
               </form>
               <div>
                 <h3>Names</h3>
                 <ul>
-                  { this.state.people.map(({name, email}, i) => (
+                  { this.state.people.map(({name, email, department, course}, i) => (
                       <li key={i}>
-                          {name} ({email})
+                          {[name, email, department, course].join(' - ')}
                       </li>
                   ))}
                 </ul>
