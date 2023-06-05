@@ -17,24 +17,50 @@ class Input extends React.Component {
           department: ''
         },
         fieldErrors: {},
-        people: []
+        people: [],
+        _loading: false,
+        _saveStatus: 'READY'
     };
+
+    componentDidMount = () => {
+        this.setState((prevState, props) => ({_loading: true }));
+        apiClient.loadPeople().then(people => {
+            this.setState((prevState, props) => ({_loading: false, people: people}));
+        });
+    }
 
     onFormSubmit = (evt) => {
         evt.preventDefault();
 
         if(!this.validate()) {
+
+            this.setState((prevState, props) => ({_saveStatus: 'SAVING'}));
+
             const person = this.state.fields;
             const people = [...this.state.people, person];
-            this.setState((prevState, props) => ({
-                people,
-                fields: {
-                    name: '',
-                    email: '',
-                    department: '',
-                    course: ''
-                }
-            }));
+
+            apiClient.savePeople(people)
+                .then(() => {
+                    this.setState((prevState, props) => ({
+                        people,
+                        fields: {
+                            name: '',
+                            email: '',
+                            department: '',
+                            course: ''
+                        },
+                        _saveStatus: 'SUCCESS'
+                    }));
+                })
+                .then(() => {
+                    setTimeout(() => {
+                        this.setState((prevState, props) => ({_saveStatus: 'READY'}));
+                    }, 1000);
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({ _saveStatus: 'ERROR' });
+                });
         }
     };
 
@@ -67,6 +93,9 @@ class Input extends React.Component {
     };
 
     render() {
+        if(this.state._loading) {
+            return <div>Loading...</div>
+        }
         return (
             <div>
               <h1>Sign Up Sheet</h1>
@@ -93,7 +122,26 @@ class Input extends React.Component {
                   onChanges={this.onInputChanges}
                 />
                 <br/>
-                <input type="submit" disabled={this.validate()}/>
+                {
+                    {
+                        SAVING: <input value="Saving..." type="submit" disabled />,
+                        SUCCESS: <input  value="Saved!" typed="submit" disabled />,
+                        ERROR: (
+                                <input
+                                  value="Save Failed - Retry?"
+                                  type="submit"
+                                  disabled={this.validate()}
+                                />
+                            ),
+                        READY: (
+                                <input
+                                  value="Submit"
+                                  type="submit"
+                                  disabled={this.validate()}
+                                />
+                        )
+                    }[this.state._saveStatus]
+                }
               </form>
               <div>
                 <h3>Names</h3>
@@ -108,6 +156,34 @@ class Input extends React.Component {
             </div>
         );
     }
+}
+
+const apiClient = {
+    loadPeople: function() {
+        return {
+            then: function(cb) {
+                setTimeout(() => {
+                    cb(JSON.parse(localStorage.people || '[]'));
+                }, 1000);
+            }
+        };
+    },
+    savePeople: function(people) {
+        const success = !!(this.count++ % 2);
+
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if(!success) {
+                    return reject({success});
+                }
+
+                localStorage.people = JSON.stringify(people);
+                return resolve({success});
+
+            }, 1000); 
+        });
+    },
+    count: 1
 }
 
 export default Input;
