@@ -32,7 +32,7 @@ export function fetchPeople() {
     };
 };
 
-export function savePeopl(people) {
+export function savePeople(people) {
     return function(dispatch) {
         dispatch(savePeopleRequest());
         apiClient.savePeople(people)

@@ -1,66 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import isEmail from 'validator/lib/isEmail';
 import Field from "./field";
 import CourseSelect from './course-select';
 
-const content = document.createElement('div');
-document.body.appendChild(content);
+class Form extends React.Component {
 
-class Input extends React.Component {
-    static displayName = 'basic-input';
-
-    state = {
-        fields: {
-          name: '',
-          email: '',
-          course: '',
-          department: ''
-        },
-        fieldErrors: {},
-        people: [],
-        _loading: false,
-        _saveStatus: 'READY'
+    static propTypes = {
+        people: PropTypes.array.isRequired,
+        isLoading: PropTypes.bool.isRequired,
+        saveStatus: PropTypes.string.isRequired,
+        fields: PropTypes.object,
+        onSubmit: PropTypes.func.isRequired
     };
 
-    componentDidMount = () => {
-        this.setState((prevState, props) => ({_loading: true }));
-        apiClient.loadPeople().then(people => {
-            this.setState((prevState, props) => ({_loading: false, people: people}));
-        });
-    }
+    state = {
+        fields: this.props.fields || {
+          name: '',
+          email: '',
+          course: null,
+          department: null
+        },
+        fieldErrors: {}
+    };
 
     onFormSubmit = (evt) => {
         evt.preventDefault();
-
         if(!this.validate()) {
-
-            this.setState((prevState, props) => ({_saveStatus: 'SAVING'}));
-
             const person = this.state.fields;
-            const people = [...this.state.people, person];
-
-            apiClient.savePeople(people)
-                .then(() => {
-                    this.setState((prevState, props) => ({
-                        people,
-                        fields: {
-                            name: '',
-                            email: '',
-                            department: '',
-                            course: ''
-                        },
-                        _saveStatus: 'SUCCESS'
-                    }));
-                })
-                .then(() => {
-                    setTimeout(() => {
-                        this.setState((prevState, props) => ({_saveStatus: 'READY'}));
-                    }, 1000);
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.setState({ _saveStatus: 'ERROR' });
-                });
+            this.props.onSubmit([...this.props.people, person]);
         }
     };
 
@@ -83,7 +51,8 @@ class Input extends React.Component {
     validate = () => {
         const person = this.state.fields;
         const fieldErrors = this.state.fieldErrors;
-        const errMessages = Object.keys(fieldErrors).filter((name) => fieldErrors[name]);
+        const errMessages = Object.keys(fieldErrors)
+              .filter((name) => fieldErrors[name]);
 
         return !person.name
             || !person.email
@@ -93,9 +62,16 @@ class Input extends React.Component {
     };
 
     render() {
-        if(this.state._loading) {
+        if(this.props._loading) {
             return <div>Loading...</div>
         }
+
+        const dirty = Object.keys(this.state.fields).length;
+        let status = this.props.saveStatus;
+        if(status === 'SUCCESS' && dirty) {
+            status = 'READY';
+        }
+
         return (
             <div>
               <h1>Sign Up Sheet</h1>
@@ -140,13 +116,13 @@ class Input extends React.Component {
                                   disabled={this.validate()}
                                 />
                         )
-                    }[this.state._saveStatus]
+                    }[status]
                 }
               </form>
               <div>
                 <h3>Names</h3>
                 <ul>
-                  { this.state.people.map(({name, email, department, course}, i) => (
+                  { this.props.people.map(({name, email, department, course}, i) => (
                       <li key={i}>
                           {[name, email, department, course].join(' - ')}
                       </li>
@@ -158,32 +134,4 @@ class Input extends React.Component {
     }
 }
 
-const apiClient = {
-    loadPeople: function() {
-        return {
-            then: function(cb) {
-                setTimeout(() => {
-                    cb(JSON.parse(localStorage.people || '[]'));
-                }, 1000);
-            }
-        };
-    },
-    savePeople: function(people) {
-        const success = !!(this.count++ % 2);
-
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if(!success) {
-                    return reject({success});
-                }
-
-                localStorage.people = JSON.stringify(people);
-                return resolve({success});
-
-            }, 1000); 
-        });
-    },
-    count: 1
-}
-
-export default Input;
+export default Form;

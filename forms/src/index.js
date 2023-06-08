@@ -2,12 +2,12 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 
-import Button from './basic-button.js';
-import Input from './basic-input';
+import Button from './basic-button';
+import ReduxApp from './redux-app';
 
 const routes = [
     Button,
-    Input
+    ReduxApp
 ];
 
 const location = window.location;
