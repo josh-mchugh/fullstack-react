@@ -8,7 +8,6 @@ class App extends React.Component {
 
     onItemChange = (e) => {
         const value = e.target.value;
-        console.log(value);
         this.setState((prevState, props) => ({
             item: value
         }));
