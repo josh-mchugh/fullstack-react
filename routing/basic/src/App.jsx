@@ -1,30 +1,61 @@
-import { useState } from 'react';
+import React from 'react';
 import './App.css';
+import { createBrowserHistory } from 'history';
 
-function App() {
+const history = createBrowserHistory();
 
-  return (
-      <>
-        <div className="ui text container">
-          <h2 className="ui dividing header">
-            Which body of water?
-          </h2>
-          <ul>
-            <li>
-              <a href="/atlantic">
-                <code>/atlantic</code>
-              </a>
-            </li>
-            <li>
-              <a href="/pacific">
-                <code>/pacific</code>
-              </a>
-            </li>
-          </ul>
-          <hr/>
-        </div>
-      </>
-  );
+const Route = ({ path, component: Component }) => {
+    const pathname = window.location.pathname;
+    return pathname.match(path) ? <Component /> : null;
+};
+
+const Link = ({ to, children }) => {
+
+    const onClick = (e) => {
+        e.preventDefault();
+        history.push(to);
+    };
+
+    return (
+        <a href={to} onClick={onClick}>
+          { children }
+        </a>
+    );
+};
+
+class App extends React.Component {
+
+    componentDidMount() {
+        history.listen(() => this.forceUpdate());
+    }
+
+    render() {   
+        return (
+            <>
+              <div className="ui text container">
+                <h2 className="ui dividing header">
+                  Which body of water?
+                </h2>
+                <ul>
+                  <li>
+                    <Link to="/atlantic">
+                      <code>/atlantic</code>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/pacific">
+                      <code>/pacific</code>
+                    </Link>
+                  </li>
+                </ul>
+                <hr/>
+
+                <Route path='/atlantic' component={ Atlantic }/>
+                <Route path='/pacific' component={ Pacific }/>
+              </div>
+            </>
+        );
+    }
 }
 
 const Atlantic = () => (
