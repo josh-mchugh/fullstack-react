@@ -3,3 +3,20 @@ In this example we explore creating a simple routing component and then mirgrati
 
 ## Demonstration Gif
 ![Demonstration of the React Routes application](./images/demonstration.gif)
+
+
+## Setup and Execution
+
+1. To install dependencies:
+
+```shell
+npm install
+```
+
+2. To start the application:
+
+```shell
+npm run dev
+```
+
+3. View application in browser at `localhost:5173`.
