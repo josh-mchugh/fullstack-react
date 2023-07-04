@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
+import { reducer } from './Reducers';
+import ConversationTabs from './ConversationTabs';
 import './App.css';
 
-const reducer = combineReducers({});
-
+// ---- App
 const store = createStore(reducer);
 
 function App() {
@@ -12,25 +13,17 @@ function App() {
       <>
         <Provider store={store}>
           <div className="ui container segment">
-            <Tabs />
-            <Thread />
+            <ConversationTabs />
+            <Conversation />
           </div>
         </Provider>
       </>
   );
 }
 
-function Tabs(props) {
-    return (
-        <div className="ui top attached tabular menu">
-          <div className="active item">
-            Title Text
-          </div>
-        </div>
-    );
-}
+// ---- Converstation
 
-function Thread(props) {
+function Conversation(props) {
     return (
         <div className="ui center aligned basic segment">
           <MessageList />
