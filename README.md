@@ -24,3 +24,8 @@ A simple React appplication with a list of text elements which are added from an
 In this example we explore creating a simple routing component and then mirgrating those components to React Routes. This small example display three links. Two of the links display some information while the third link displays a count down timer and navigates the user back to the root page.
 
 ![Demonstration of the React Routes application](./routing/basic/images/demonstration.gif)
+
+## Chat App
+This small chat application uses ReactJS and Redux to maintain application state. Within this example there are two chat converstations with two seperate list of messages. Redux handles the application state and the React components recieve the application state changes as props. This allows the React Components to focus on rendering HTML and minimal component state.
+
+![Demonstration of the React and Redux](./chat/images/demonstration.gif)
